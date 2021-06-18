@@ -1,11 +1,9 @@
 const {User, ServiceRequester, ServiceProvider} = require("../models/User");
 const passport = require("passport");
-
 module.exports = {
     async registerServiceRequester(req, res) {
         let newUser = new ServiceRequester({
             username: req.body.username,
-            accountType: "serviceRequester",
             name: req.body.name,
             image: req.body.image,
             location: req.body.location,
@@ -27,7 +25,6 @@ module.exports = {
     async registerServiceProvider(req, res) {
         let newUser = new ServiceProvider({
             username: req.body.username,
-            accountType: "serviceProvider",
             name: req.body.name,
             image: req.body.image,
             location: req.body.location,

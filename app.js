@@ -4,7 +4,8 @@ const express = require("express"),
 	LocalStrategy = require("passport-local"),
     app = express();
 const {User, ServiceRequester, ServiceProvider} = require("./models/User.js");
-const indexRoutes = require("./routes/index")
+const indexRoutes = require("./routes/index"),
+	userRoutes = require("./routes/user");
 
 require("dotenv").config();
 
@@ -24,6 +25,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/", indexRoutes);
+app.use("/users/", userRoutes)
 
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
