@@ -16,9 +16,36 @@ module.exports = {
                 // flash some message
                 console.log(err)
             } else {
+                passport.authenticate("local")(req, res, () => {
+                    //placeholder route
+                    res.redirect("/");
+                })
+            }
+        })
+    },
+
+    async registerServiceProvider(req, res, next) {
+        let newUser = new ServiceProvider({
+            username: req.body.username,
+            accountType: "serviceProvider",
+            name: req.body.name,
+            image: req.body.image,
+            location: req.body.location,
+            profession: req.body.profession,
+            skills: req.body.skills,
+            availability: req.body.availability,
+            servicesOffered: req.body.servicesOffered,
+            contact: req.body.contact,
+        });
+        ServiceProvider.register(newUser, req.body.password, (err, user) => {
+            if (err) {
+                // flash some message
+                console.log(err)
+            } else {
                 console.log(newUser);
                 passport.authenticate("local")(req, res, () => {
-                    res.redirect("/");
+                    // placeholder route
+                    res.redirect("/")
                 })
             }
         })
