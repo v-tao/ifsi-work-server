@@ -11,12 +11,12 @@ module.exports = {
         });
         ServiceRequester.register(newUser, req.body.password, (err) => {
             if(err) {
-                // flash some message
+                // flash error message
                 console.log(err)
             } else {
+                // flash success message
                 passport.authenticate("local")(req, res, () => {
-                    //placeholder route
-                    res.redirect("/");
+                    res.redirect("/users");
                 });
             }
         });
@@ -36,14 +36,21 @@ module.exports = {
         });
         ServiceProvider.register(newUser, req.body.password, (err) => {
             if (err) {
-                // flash some message
+                // flash error message
                 console.log(err);
             } else {
+                // flash success message
                 passport.authenticate("local")(req, res, () => {
-                    // placeholder route
-                    res.redirect("/");
+                    res.redirect("/users");
                 })
             }
         })
+    },
+
+    async login(req, res){
+        passport.authenticate("local")(req, res, () => {
+            // flash success message
+            res.redirect("/users")
+        });
     }
 }

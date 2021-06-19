@@ -1,9 +1,10 @@
 const express = require("express"),
     router = express.Router();
 const {errorHandler} = require("../middleware");
-const {registerServiceRequester, registerServiceProvider} = require("../controllers/index.js");
+const {registerServiceRequester, registerServiceProvider, login} = require("../controllers/index.js");
 
 router.post("/register/requester", errorHandler(registerServiceRequester));
 router.post("/register/provider", errorHandler(registerServiceProvider));
+router.post("/login", errorHandler(login));
 
 module.exports = router;

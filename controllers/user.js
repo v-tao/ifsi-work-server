@@ -1,5 +1,16 @@
 const {User, ServiceRequester, ServiceProvider} = require("../models/User");
 module.exports = {
+    async getUsers(req, res) {
+        let user = await User.findById(req.user.id)
+        if (user.get("__t") == "ServiceRequester"){
+            let serviceProviders = await User.find({__t: "ServiceProvider"});
+            res.json(serviceProviders);
+        } else if (user.get("__t") == "ServiceProvider"){
+            let serviceRequesters = await User.find({__t: "ServiceRequester"});
+            res.json(serviceRequesters);
+        }
+    },
+
     async getUser(req, res) {
         let user = await User.findById(req.params.id);
         res.json(user);
