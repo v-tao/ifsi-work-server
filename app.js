@@ -2,6 +2,7 @@ const express = require("express"),
     mongoose = require("mongoose"),
 	passport = require("passport"),
 	LocalStrategy = require("passport-local"),
+	session = require("express-session"),
 	flash = require("connect-flash"),
     app = express();
 const {User, ServiceRequester, ServiceProvider} = require("./models/User.js");
@@ -19,6 +20,12 @@ mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cl
 }).catch(err => {
 	console.log("ERROR", err.message);
 });
+
+app.use(session({ cookie: { maxAge: 60000 }, 
+	secret: process.env.SESSION_SECRET,
+	resave: false, 
+	saveUninitialized: false,
+}));
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json()); 

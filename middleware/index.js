@@ -4,17 +4,16 @@ module.exports = {
 		if (req.isAuthenticated()) {
 			return next();
 		}
-		// flash message
-		res.redirect("/login")
+		res.redirect("/login");
 	},
 	
 	async checkUser(req, res, next) {
 		let user = await User.findById(req.params.id);
-		if (user.id.equals(req.user_id)) {
+		if (user.id == req.user_id) {
 			next();
 		}
-		// flash message
-		res.redirect("/users")
+		req.flash("error", "You do not have permission to do that");
+		res.redirect("/users");
 	},
 	
 	errorHandler: fn => (req, res, next) => {

@@ -34,11 +34,13 @@ module.exports = {
             console.log(updatedUser);
         }
         await User.findByIdAndUpdate(req.params.id, updatedUser, {useFindAndModify: false});
+        req.flash("success", "User successfully updated")
         res.redirect("/users/" + req.params.id);
     },
 
     async deleteUser(req, res) {
         await User.findByIdAndDelete(req.params.id);
+        req.flash("success", "User successfully deleted")
         res.redirect("/login")
     }
 }

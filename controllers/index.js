@@ -11,11 +11,10 @@ module.exports = {
         });
         ServiceRequester.register(newUser, req.body.password, (err) => {
             if(err) {
-                // flash error message
-                console.log(err)
+                req.flash("error", err);
                 res.redirect("back");
             } else {
-                // flash success message
+                req.flash("success", "Registration successful");
                 passport.authenticate("local")(req, res, () => {
                     res.redirect("/users");
                 });
@@ -37,11 +36,10 @@ module.exports = {
         });
         ServiceProvider.register(newUser, req.body.password, (err) => {
             if (err) {
-                // flash error message
-                console.log(err);
-                res.redirect("back")
+                req.flash("error", err);
+                res.redirect("back");
             } else {
-                // flash success message
+                req.flash("success", "Registration successful");
                 passport.authenticate("local")(req, res, () => {
                     res.redirect("/users");
                 })
@@ -51,7 +49,7 @@ module.exports = {
 
     async login(req, res){
         passport.authenticate("local")(req, res, () => {
-            // flash success message
+            req.flash("success", "Login successful")
             res.redirect("/users")
         });
     }
