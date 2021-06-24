@@ -47,10 +47,16 @@ module.exports = {
         })
     },
 
-    async login(req, res){
+    async login(req, res) {
         passport.authenticate("local")(req, res, () => {
             req.flash("success", "Login successful")
             res.redirect("/users")
         });
+    },
+
+    async logout(req, res) {
+        req.logout();
+        req.flash("success", "Successfully logged out")
+        res.redirect("/login");
     }
 }
