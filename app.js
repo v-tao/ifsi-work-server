@@ -2,9 +2,9 @@ const express = require("express"),
     mongoose = require("mongoose"),
 	passport = require("passport"),
 	LocalStrategy = require("passport-local"),
+	flash = require("connect-flash"),
     app = express();
 const {User, ServiceRequester, ServiceProvider} = require("./models/User.js");
-const {errorHandler, checkLogin, checkUser} = require("./middleware");
 const indexRoutes = require("./routes/index"),
 	userRoutes = require("./routes/user");
 
@@ -22,6 +22,7 @@ mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cl
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json()); 
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -31,6 +32,8 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
 	res.locals.currentUser = req.user;
+	res.locals.error = req.flash("error");
+	res.locals.success = req.flash("success");
 	next();
 });
 
