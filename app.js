@@ -4,6 +4,7 @@ const express = require("express"),
 	LocalStrategy = require("passport-local"),
     app = express();
 const {User, ServiceRequester, ServiceProvider} = require("./models/User.js");
+const {errorHandler, checkLogin, checkUser} = require("./middleware");
 const indexRoutes = require("./routes/index"),
 	userRoutes = require("./routes/user");
 
@@ -24,9 +25,6 @@ app.use(express.json());
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/", indexRoutes);
-app.use("/users/", userRoutes)
-
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
@@ -34,7 +32,10 @@ passport.deserializeUser(User.deserializeUser());
 app.use((req, res, next) => {
 	res.locals.currentUser = req.user;
 	next();
-})
+});
+
+app.use("/", indexRoutes);
+app.use("/users/", userRoutes);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

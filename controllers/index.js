@@ -13,6 +13,7 @@ module.exports = {
             if(err) {
                 // flash error message
                 console.log(err)
+                res.redirect("back");
             } else {
                 // flash success message
                 passport.authenticate("local")(req, res, () => {
@@ -38,6 +39,7 @@ module.exports = {
             if (err) {
                 // flash error message
                 console.log(err);
+                res.redirect("back")
             } else {
                 // flash success message
                 passport.authenticate("local")(req, res, () => {

@@ -1,12 +1,12 @@
 const express = require("express"),
     router = express.Router();
-const {errorHandler} = require("../middleware");
+const {checkLogin, checkUser, errorHandler} = require("../middleware");
 const {getUsers, getUser, updateUser, deleteUser} = require("../controllers/user.js");
 
-router.get("/", errorHandler(getUsers));
-router.get("/:id", errorHandler(getUser));
-router.get("/:id/edit", errorHandler(getUser));
-router.put("/:id/edit", errorHandler(updateUser));
-router.delete("/:id/delete", errorHandler(deleteUser));
+router.get("/", checkLogin, errorHandler(getUsers));
+router.get("/:id", checkLogin, errorHandler(getUser));
+router.get("/:id/edit", checkUser, errorHandler(getUser));
+router.put("/:id/edit", checkUser, errorHandler(updateUser));
+router.delete("/:id/delete", checkUser, errorHandler(deleteUser));
 
 module.exports = router;
