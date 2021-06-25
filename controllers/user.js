@@ -40,7 +40,5 @@ module.exports = {
 
     async deleteUser(req, res) {
         await User.findByIdAndDelete(req.params.id);
-        req.flash("success", "User successfully deleted")
-        res.redirect("/login")
     }
 }

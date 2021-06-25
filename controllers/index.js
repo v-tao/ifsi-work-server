@@ -56,7 +56,5 @@ module.exports = {
 
     async logout(req, res) {
         req.logout();
-        req.flash("success", "Successfully logged out")
-        res.redirect("/login");
     }
 }
