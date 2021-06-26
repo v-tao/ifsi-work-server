@@ -31,7 +31,6 @@ module.exports = {
             updatedUser.availability = req.body.availability;
             updatedUser.servicesOffered = req.body.servicesOffered;
             updatedUser.contact = req.body.contact;
-            console.log(updatedUser);
         }
         await User.findByIdAndUpdate(req.params.id, updatedUser, {useFindAndModify: false});
         req.flash("success", "User successfully updated")
