@@ -10,10 +10,9 @@ module.exports = {
             services: req.body.services,
             contact: req.body.contact,
         });
-        ServiceRequester.register(newUser, req.body.password, (err) => {
+        User.register(newUser, req.body.password, (err) => {
             if(err) {
-                req.flash("error", err);
-                res.redirect("back");
+                res.send(err);
             } else {
                 req.flash("success", "Registration successful");
                 passport.authenticate("local")(req, res, () => {
@@ -35,10 +34,9 @@ module.exports = {
             skills: req.body.skills,
             availability: req.body.availability,
         });
-        ServiceProvider.register(newUser, req.body.password, (err) => {
+        User.register(newUser, req.body.password, (err) => {
             if (err) {
-                req.flash("error", err);
-                res.redirect("back");
+                res.send(err);
             } else {
                 req.flash("success", "Registration successful");
                 passport.authenticate("local")(req, res, () => {
