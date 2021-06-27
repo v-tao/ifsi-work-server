@@ -6,25 +6,24 @@ const userSchema = new mongoose.Schema({
     name: String,
     image: String,
     location: String,
-})
+    services: [{
+        title: String,
+        rate: String,
+        description: String,
+    }],
+    contact: String,
+});
 
 userSchema.plugin(passportLocalMongoose);
 userSchema.methods.validPassword = password => this.password === password;
 
 const User = mongoose.model("User", userSchema)
-const ServiceRequester = User.discriminator("ServiceRequester", new mongoose.Schema({
-    servicesRequested: [{type: String}]
-}));
+const ServiceRequester = User.discriminator("ServiceRequester", new mongoose.Schema({}));
 const ServiceProvider = User.discriminator("ServiceProvider",new mongoose.Schema({
     profession: String, 
     skills: [{type: String}],
     availability: [{type: String}],
-    servicesOffered: [{
-        service: String,
-        rate: String
-    }],
-    contact: String,
-}))
+}));
 
 
 module.exports = {User, ServiceRequester, ServiceProvider}

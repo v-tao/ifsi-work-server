@@ -22,15 +22,13 @@ module.exports = {
             name: req.body.name,
             image: req.body.image,
             location: req.body.location,
+            services: req.body.services,
+            contact: req.body.contact,
         }
-        if (user.get("__t") == "ServiceRequester") {
-            updatedUser.servicesRequested = req.body.servicesRequested;
-        } else if (user.get("__t") == "ServiceProvider") {
+        if (user.get("__t") == "ServiceProvider") {
             updatedUser.profession = req.body.profession;
             updatedUser.skills = req.body.skills;
             updatedUser.availability = req.body.availability;
-            updatedUser.servicesOffered = req.body.servicesOffered;
-            updatedUser.contact = req.body.contact;
         }
         await User.findByIdAndUpdate(req.params.id, updatedUser, {useFindAndModify: false});
         req.flash("success", "User successfully updated")

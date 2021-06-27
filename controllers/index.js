@@ -7,7 +7,8 @@ module.exports = {
             name: req.body.name,
             image: req.body.image,
             location: req.body.location,
-            servicesRequested: req.body.servicesRequested,
+            services: req.body.services,
+            contact: req.body.contact,
         });
         ServiceRequester.register(newUser, req.body.password, (err) => {
             if(err) {
@@ -28,11 +29,11 @@ module.exports = {
             name: req.body.name,
             image: req.body.image,
             location: req.body.location,
+            services: req.body.services,
+            contact: req.body.contact,
             profession: req.body.profession,
             skills: req.body.skills,
             availability: req.body.availability,
-            servicesOffered: req.body.servicesOffered,
-            contact: req.body.contact,
         });
         ServiceProvider.register(newUser, req.body.password, (err) => {
             if (err) {
