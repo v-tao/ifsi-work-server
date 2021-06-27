@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
         rate: String,
         description: String,
     }],
-    contact: String,
+    contact: [{type: String}],
 });
 
 userSchema.plugin(passportLocalMongoose);
