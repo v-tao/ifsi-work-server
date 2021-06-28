@@ -12,24 +12,6 @@ const indexRoutes = require("./routes/index"),
 
 require("dotenv").config();
 
-// const allowedOrigins = [
-// 	"http://localhost:8100",
-// 	"https://ifsi-work-app.herokuapp.com/",
-// 	process.env.IP_ADDRESS,
-// ]
-
-const corsOptions = {
-	origin: (origin, callback) => {
-	  if (allowedOrigins.includes(origin) || !origin) {
-		callback(null, true);
-	  } else {
-		callback(new Error('Origin not allowed by CORS'));
-	  }
-	}
-  }
-
-// app.options('*', cors(corsOptions));
-
 mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.4c08b.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`, {
 	useNewUrlParser: true,
 	useCreateIndex: true,
@@ -46,12 +28,12 @@ app.use(session({ cookie: { maxAge: 60000 },
 	saveUninitialized: false,
 }));
 
-// app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.urlencoded({extended: true}));
 app.use(express.json()); 
 app.use(flash());
 app.use(passport.initialize());
-app.use(cors());
+app.use(passport.session());
 
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
