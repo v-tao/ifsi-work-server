@@ -14,9 +14,11 @@ module.exports = {
             if(err) {
                 res.send(err);
             } else {
-                req.flash("success", "Registration successful");
-                passport.authenticate("local")(req, res, () => {
-                    res.redirect("/users");
+                passport.authenticate("local", {
+                    failureFlash: true, 
+                    successFlash: "Registration successful"
+                })(req, res, () => {
+                    res.send("Registration successful")
                 });
             }
         });
@@ -38,18 +40,22 @@ module.exports = {
             if (err) {
                 res.send(err);
             } else {
-                req.flash("success", "Registration successful");
-                passport.authenticate("local")(req, res, () => {
-                    res.redirect("/users");
-                })
+                passport.authenticate("local", {
+                    failureFlash: true, 
+                    successFlash: "Registration successful"
+                })(req, res, () => {
+                    res.send("Registration successful")
+                });
             }
         })
     },
 
     async login(req, res) {
-        passport.authenticate("local")(req, res, () => {
-            req.flash("success", "Login successful")
-            res.redirect("/users")
+        passport.authenticate("local", {
+            failureFlash: true, 
+            successFlash: "Successfully logged in"
+        })(req, res, () => {
+            res.send("Successfully logged in")
         });
     },
 
