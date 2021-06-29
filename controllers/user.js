@@ -1,15 +1,33 @@
 const {User, ServiceRequester, ServiceProvider} = require("../models/User");
 module.exports = {
     async getUsers(req, res) {
-        let user = await User.findById(req.user.id)
-        if (user.get("__t") == "ServiceRequester"){
-            let serviceProviders = await User.find({__t: "ServiceProvider"});
-            res.json(serviceProviders);
-        } else if (user.get("__t") == "ServiceProvider"){
-            let serviceRequesters = await User.find({__t: "ServiceRequester"});
-            res.json(serviceRequesters);
+        let user = await User.findById(req.user.id);
+        let query = req.query;
+        if (req.query.service) {
+            query.services = {$elemMatch: {title: req.query.service}};
+            delete query.service;
         }
+        switch (user.get("__t")) {
+            case "ServiceRequester":
+                query.__t = "ServiceProvider"
+                break;
+            case "ServiceProvider":
+                query.__t = "ServiceRequester"
+                break;
+        }
+        console.log(query);
+        res.json(await User.find(query));
     },
+    // async getUsers(req, res) {
+    //     let user = await User.findById(req.user.id)
+    //     if (user.get("__t") == "ServiceRequester"){
+    //         let serviceProviders = await User.find({__t: "ServiceProvider"});
+    //         res.json(serviceProviders);
+    //     } else if (user.get("__t") == "ServiceProvider"){
+    //         let serviceRequesters = await User.find({__t: "ServiceRequester"});
+    //         res.json(serviceRequesters);
+    //     }
+    // },
 
     async getUser(req, res) {
         let user = await User.findById(req.params.id);
@@ -37,5 +55,5 @@ module.exports = {
 
     async deleteUser(req, res) {
         await User.findByIdAndDelete(req.params.id);
-    }
+    },
 }
