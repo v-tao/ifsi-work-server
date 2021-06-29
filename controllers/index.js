@@ -18,7 +18,7 @@ module.exports = {
                     failureFlash: true, 
                     successFlash: "Registration successful"
                 })(req, res, () => {
-                    res.send("Registration successful")
+                    res.send(req.user.id);
                 });
             }
         });
@@ -44,7 +44,7 @@ module.exports = {
                     failureFlash: true, 
                     successFlash: "Registration successful"
                 })(req, res, () => {
-                    res.send("Registration successful")
+                    res.send(req.user.id);
                 });
             }
         })
@@ -55,7 +55,7 @@ module.exports = {
             failureFlash: true, 
             successFlash: "Successfully logged in"
         })(req, res, () => {
-            res.send("Successfully logged in")
+            res.send(req.user.id);
         });
     },
 
