@@ -49,11 +49,11 @@ module.exports = {
             updatedUser.availability = req.body.availability;
         }
         await User.findByIdAndUpdate(req.params.id, updatedUser, {useFindAndModify: false});
-        req.flash("success", "User successfully updated")
-        res.redirect("/users/" + req.params.id);
+        res.send("User successfully updated");
     },
 
     async deleteUser(req, res) {
         await User.findByIdAndDelete(req.params.id);
-    },
+        res.send("User successfully deleted");
+    }
 }
