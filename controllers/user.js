@@ -1,14 +1,21 @@
 const {User, ServiceRequester, ServiceProvider} = require("../models/User");
+const parseQuery = (query) => query.toLowerCase().replace("+", " ")
 module.exports = {
     async getUsers(req, res) {
-        let user = await User.findById(req.user.id)
-        if (user.get("__t") == "ServiceRequester"){
-            let serviceProviders = await User.find({__t: "ServiceProvider"});
-            res.json(serviceProviders);
-        } else if (user.get("__t") == "ServiceProvider"){
-            let serviceRequesters = await User.find({__t: "ServiceRequester"});
-            res.json(serviceRequesters);
+        let user = await User.findById(req.user.id);
+        let query = {};
+        if (req.query.name) query.name_lower = parseQuery(req.query.name);
+        if (req.query.location) query.location_lower = parseQuery(req.query.location);
+        if (req.query.service) query.services = {$elemMatch: {title_lower: parseQuery(req.query.service.toLowerCase)}};
+        switch (user.get("__t")) {
+            case "ServiceRequester":
+                query.__t = "ServiceProvider"
+                break;
+            case "ServiceProvider":
+                query.__t = "ServiceRequester"
+                break;
         }
+        res.json(await User.find(query));
     },
 
     async getUser(req, res) {
@@ -36,11 +43,11 @@ module.exports = {
             updatedUser.availability = req.body.availability;
         }
         await User.findByIdAndUpdate(req.params.id, updatedUser, {useFindAndModify: false});
-        req.flash("success", "User successfully updated")
-        res.redirect("/users/" + req.params.id);
+        res.send("User successfully updated");
     },
 
     async deleteUser(req, res) {
         await User.findByIdAndDelete(req.params.id);
+        res.send("User successfully deleted");
     }
 }

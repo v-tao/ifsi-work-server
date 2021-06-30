@@ -25,7 +25,10 @@ module.exports = {
         let newUser = new ServiceRequester({
             username: req.body.username,
             name: req.body.name,
+            name_lower : req.body.name.toLowerCase(),
+            image: req.body.image,
             location: req.body.location,
+            location_lower : req.body.location.toLowerCase(),
             services: req.body.services,
             contact: req.body.contact,
         });
@@ -38,9 +41,11 @@ module.exports = {
             if(err) {
                 res.send(err);
             } else {
-                req.flash("success", "Registration successful");
-                passport.authenticate("local")(req, res, () => {
-                    res.redirect("/users");
+                passport.authenticate("local", {
+                    failureFlash: true, 
+                    successFlash: "Registration successful"
+                })(req, res, () => {
+                    res.send(req.user.id);
                 });
             }
         });
@@ -50,11 +55,12 @@ module.exports = {
         let newUser = new ServiceProvider({
             username: req.body.username,
             name: req.body.name,
+            name_lower: req.body.name.toLowerCase(),
             image: req.body.image,
             location: req.body.location,
+            location_lower: req.body.location.toLowerCase(),
             services: req.body.services,
             contact: req.body.contact,
-            profession: req.body.profession,
             skills: req.body.skills,
             availability: req.body.availability,
         });
@@ -67,22 +73,27 @@ module.exports = {
             if (err) {
                 res.send(err);
             } else {
-                req.flash("success", "Registration successful");
-                passport.authenticate("local")(req, res, () => {
-                    res.redirect("/users");
-                })
+                passport.authenticate("local", {
+                    failureFlash: true, 
+                    successFlash: "Registration successful"
+                })(req, res, () => {
+                    res.send(req.user.id);
+                });
             }
         })
     },
 
     async login(req, res) {
-        passport.authenticate("local")(req, res, () => {
-            req.flash("success", "Login successful")
-            res.redirect("/users")
+        passport.authenticate("local", {
+            failureFlash: true, 
+            successFlash: "Successfully logged in"
+        })(req, res, () => {
+            res.send(req.user.id);
         });
     },
 
     async logout(req, res) {
         req.logout();
+        res.send("Successfully logged out")
     }
 }

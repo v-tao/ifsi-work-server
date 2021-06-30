@@ -4,6 +4,7 @@ const express = require("express"),
 	LocalStrategy = require("passport-local"),
 	session = require("express-session"),
 	flash = require("connect-flash"),
+	cors = require("cors"),
     app = express();
 const {User, ServiceRequester, ServiceProvider} = require("./models/User.js");
 const indexRoutes = require("./routes/index"),
@@ -27,6 +28,7 @@ app.use(session({ cookie: { maxAge: 60000 },
 	saveUninitialized: false,
 }));
 
+app.use(cors({origin: true,credentials: true}));
 app.use(express.urlencoded({extended: true}));
 app.use(express.json()); 
 app.use(flash());
