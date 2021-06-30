@@ -3,13 +3,14 @@ module.exports = {
 	checkLogin: (req, res, next) => {
 		if (req.isAuthenticated()) {
 			return next();
+		} else {
+			res.send("Must be logged in.");
 		}
-		res.send("Must be logged in.")
 	},
 	
 	async checkUser(req, res, next) {
 		let user = await User.findById(req.params.id);
-		if (user.id == req.user._id) {
+		if (user.id == req.user_id) {
 			next();
 		} else {
 			res.send("You do not have permission to do that.");

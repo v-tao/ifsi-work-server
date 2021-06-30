@@ -5,8 +5,10 @@ module.exports = {
         let newUser = new ServiceRequester({
             username: req.body.username,
             name: req.body.name,
+            name_lower : req.body.name.toLowerCase(),
             image: req.body.image,
             location: req.body.location,
+            location_lower : req.body.location.toLowerCase(),
             services: req.body.services,
             contact: req.body.contact,
         });
@@ -28,11 +30,12 @@ module.exports = {
         let newUser = new ServiceProvider({
             username: req.body.username,
             name: req.body.name,
+            name_lower: req.body.name.toLowerCase(),
             image: req.body.image,
             location: req.body.location,
+            location_lower: req.body.location.toLowerCase(),
             services: req.body.services,
             contact: req.body.contact,
-            profession: req.body.profession,
             skills: req.body.skills,
             availability: req.body.availability,
         });

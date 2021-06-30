@@ -1,12 +1,12 @@
 const {User, ServiceRequester, ServiceProvider} = require("../models/User");
+const parseQuery = (query) => query.toLowerCase().replace("+", " ")
 module.exports = {
     async getUsers(req, res) {
         let user = await User.findById(req.user.id);
-        let query = req.query;
-        if (req.query.service) {
-            query.services = {$elemMatch: {title: req.query.service}};
-            delete query.service;
-        }
+        let query = {};
+        if (req.query.name) query.name_lower = parseQuery(req.query.name);
+        if (req.query.location) query.location_lower = parseQuery(req.query.location);
+        if (req.query.service) query.services = {$elemMatch: {title_lower: parseQuery(req.query.service.toLowerCase)}};
         switch (user.get("__t")) {
             case "ServiceRequester":
                 query.__t = "ServiceProvider"
@@ -15,19 +15,8 @@ module.exports = {
                 query.__t = "ServiceRequester"
                 break;
         }
-        console.log(query);
         res.json(await User.find(query));
     },
-    // async getUsers(req, res) {
-    //     let user = await User.findById(req.user.id)
-    //     if (user.get("__t") == "ServiceRequester"){
-    //         let serviceProviders = await User.find({__t: "ServiceProvider"});
-    //         res.json(serviceProviders);
-    //     } else if (user.get("__t") == "ServiceProvider"){
-    //         let serviceRequesters = await User.find({__t: "ServiceRequester"});
-    //         res.json(serviceRequesters);
-    //     }
-    // },
 
     async getUser(req, res) {
         let user = await User.findById(req.params.id);
