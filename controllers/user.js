@@ -32,12 +32,12 @@ module.exports = {
             services: req.body.services,
             contact: req.body.contact,
         }
-        if (user.get("__t") == "ServiceProvider") {
-            updatedUser.profession = req.body.profession;
-            updatedUser.skills = req.body.skills;
-            updatedUser.availability = req.body.availability;
-        }
         await User.findByIdAndUpdate(req.params.id, updatedUser, {useFindAndModify: false});
+        if (user.get("__t") == "ServiceProvider") {
+            user.skills = req.body.skills;
+            user.availability = req.body.availability;
+            user.save();
+        }
         res.send("User successfully updated");
     },
 
