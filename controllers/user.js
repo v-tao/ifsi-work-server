@@ -27,8 +27,10 @@ module.exports = {
         let user = await User.findById(req.params.id);
         let updatedUser = {
             name: req.body.name,
+            name_lower: req.body.name.toLowerCase(),
             image: req.body.image,
             location: req.body.location,
+            location_lower: req.body.location.toLowerCase(),
             services: req.body.services,
             contact: req.body.contact,
         }
