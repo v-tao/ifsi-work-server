@@ -34,12 +34,12 @@ module.exports = {
             services: req.body.services,
             contact: req.body.contact,
         }
+        cloudinary.v2.uploader.destroy(user.imageId);
         if (req.file) {
-            cloudinary.v2.uploader.destroy(user.imageId);
             let result = await cloudinary.v2.uploader.upload(req.file.path, {quality:"auto", fetch_format:"auto", folder:"ifsi-work-app"});
             updatedUser.image = result.secure_url;
             updatedUser.imageId = result.public_id;
-        }
+        } 
         await User.findByIdAndUpdate(req.params.id, updatedUser, {useFindAndModify: false});
         if (user.get("__t") == "ServiceProvider") {
             user.skills = req.body.skills;
