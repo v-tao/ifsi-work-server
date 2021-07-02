@@ -27,7 +27,10 @@ module.exports = {
         let user = await User.findById(req.params.id);
         let updatedUser = {
             name: req.body.name,
+            name_lower: req.body.name.toLowerCase(),
+            image: req.body.image,
             location: req.body.location,
+            location_lower: req.body.location.toLowerCase(),
             services: req.body.services,
             contact: req.body.contact,
         }
@@ -37,12 +40,12 @@ module.exports = {
             updatedUser.image = result.secure_url;
             updatedUser.imageId = result.public_id;
         }
-        if (user.get("__t") == "ServiceProvider") {
-            updatedUser.profession = req.body.profession;
-            updatedUser.skills = req.body.skills;
-            updatedUser.availability = req.body.availability;
-        }
         await User.findByIdAndUpdate(req.params.id, updatedUser, {useFindAndModify: false});
+        if (user.get("__t") == "ServiceProvider") {
+            user.skills = req.body.skills;
+            user.availability = req.body.availability;
+            user.save();
+        }
         res.send("User successfully updated");
     },
 
