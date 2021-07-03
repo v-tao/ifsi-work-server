@@ -3,6 +3,7 @@ const express = require("express"),
 	passport = require("passport"),
 	LocalStrategy = require("passport-local"),
 	session = require("express-session"),
+	MemoryStore = require("memorystore")(session),
 	flash = require("connect-flash"),
 	cors = require("cors"),
     app = express();
@@ -22,7 +23,11 @@ mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cl
 	console.log("ERROR", err.message);
 });
 
-app.use(session({ cookie: { maxAge: 60000 }, 
+app.use(session({ 
+	cookie: {maxAge: 86400000}, 
+	store: new MemoryStore({
+		checkPeriod: 86400000
+	}),
 	secret: process.env.SESSION_SECRET,
 	resave: false, 
 	saveUninitialized: false,
