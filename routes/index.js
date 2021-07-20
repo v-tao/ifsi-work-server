@@ -1,8 +1,9 @@
 const express = require("express"),
     router = express.Router();
 const {checkLogin, checkUser, errorHandler} = require("../middleware");
-const {registerServiceRequester, registerServiceProvider, login, logout} = require("../controllers/index.js");
+const {sendVerificationEmail, registerServiceRequester, registerServiceProvider, verify, login, logout} = require("../controllers/index.js");
 
+router.get("/verify/:uniqueString", errorHandler(verify));
 router.post("/register/requester", errorHandler(registerServiceRequester));
 router.post("/register/provider", errorHandler(registerServiceProvider));
 router.post("/login", errorHandler(login));
