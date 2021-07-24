@@ -21,6 +21,10 @@ const sendVerificationEmail = (email, uniqueString) => {
     })
 }
 module.exports = {
+    async checkDuplicateUser(req, res) {
+        users = await User.find({username: req.params.username})
+        users.length == 0 ? res.send(false) : res.send(true);
+    },
     async registerServiceRequester(req, res) {
         let newUser = new ServiceRequester({
             username: req.body.username,
