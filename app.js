@@ -11,7 +11,6 @@ const {User, ServiceRequester, ServiceProvider} = require("./models/User.js");
 const indexRoutes = require("./routes/index"),
 	userRoutes = require("./routes/user");
 
-app.use(cors());
 require("dotenv").config();
 
 mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.4c08b.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`, {
@@ -34,6 +33,7 @@ app.use(session({
 	saveUninitialized: false,
 }));
 
+app.use(cors({origin: process.env.IP_ADDRESS}));
 app.use(express.urlencoded({extended: true}));
 app.use(express.json()); 
 app.use(flash());
