@@ -5,7 +5,7 @@ const {checkLogin, checkUser, errorHandler} = require("../middleware");
 const {checkDuplicateUser, registerServiceRequester, registerServiceProvider, verify, login, logout} = require("../controllers/index.js");
 
 require("dotenv").config();
-router.use(cors({origin: process.env.IP_ADDRESS}));
+router.use(cors({credentials: true, origin: true}));
 
 router.get("/verify/:uniqueString", errorHandler(verify));
 router.get("/checkduplicate/:username", errorHandler(checkDuplicateUser))

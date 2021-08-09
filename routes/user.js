@@ -5,7 +5,7 @@ const {checkLogin, checkUser, errorHandler} = require("../middleware");
 const {getUsers, getUser, updateUser, deleteUser} = require("../controllers/user.js");
 
 require("dotenv").config();
-router.use(cors({origin: process.env.IP_ADDRESS}));
+router.use(cors({credentials: true, origin: true}));
 
 router.get("/", checkLogin, errorHandler(getUsers));
 router.get("/:id", checkLogin, errorHandler(getUser));
