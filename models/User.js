@@ -3,6 +3,8 @@ const mongoose = require("mongoose"),
 const userSchema = new mongoose.Schema({
     username: String,
     password: String,
+    verified: {type: Boolean, default: false},
+    uniqueString: String,
     name: String,
     name_lower: String,
     image: String,
@@ -20,7 +22,6 @@ const userSchema = new mongoose.Schema({
 
 userSchema.plugin(passportLocalMongoose);
 userSchema.methods.validPassword = password => this.password === password;
-
 const User = mongoose.model("User", userSchema)
 const ServiceRequester = User.discriminator("ServiceRequester", new mongoose.Schema({}));
 const ServiceProvider = User.discriminator("ServiceProvider",new mongoose.Schema({
