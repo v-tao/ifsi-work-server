@@ -1,5 +1,5 @@
 const {User, ServiceRequester, ServiceProvider} = require("../models/User");
-const parseQuery = (query) => query.toLowerCase().replace("+", " ")
+const parseQuery = (query) => query.toLowerCase().replace("+", " ");
 module.exports = {
     async getUsers(req, res) {
         let user = await User.findById(req.user.id);
@@ -28,18 +28,15 @@ module.exports = {
         let updatedUser = {
             name: req.body.name,
             name_lower: req.body.name.toLowerCase(),
-            image: req.body.image,
             location: req.body.location,
             location_lower: req.body.location.toLowerCase(),
             services: req.body.services,
             contact: req.body.contact,
         }
         cloudinary.v2.uploader.destroy(user.imageId);
-        if (req.file) {
-            let result = await cloudinary.v2.uploader.upload(req.file.path, {quality:"auto", fetch_format:"auto", folder:"ifsi-work-app"});
-            updatedUser.image = result.secure_url;
-            updatedUser.imageId = result.public_id;
-        } 
+        let result = await cloudinary.v2.uploader.upload(`data:image/png;base64,${req.body.image}`, {quality:"auto", fetch_format:"auto", folder:"ifsi-work-app"});
+        updatedUser.image = result.secure_url;
+        updatedUser.imageId = result.public_id;
         await User.findByIdAndUpdate(req.params.id, updatedUser, {useFindAndModify: false});
         if (user.get("__t") == "ServiceProvider") {
             user.skills = req.body.skills;
