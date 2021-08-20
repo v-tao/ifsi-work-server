@@ -87,7 +87,7 @@ module.exports = {
                     failureFlash: true, 
                     successFlash: "Registration successful"
                 })(req, res, () => {
-                    this.sendVerificationEmail(newUser.username, newUser.uniqueString)
+                    sendVerificationEmail(newUser.username, newUser.uniqueString)
                     res.send(req.user.id);
                 });
             }

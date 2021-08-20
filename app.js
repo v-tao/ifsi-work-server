@@ -34,8 +34,8 @@ app.use(session({
 }));
 
 app.use(cors({credentials: true, origin: true}));
-app.use(express.urlencoded({extended: true}));
-app.use(express.json()); 
+app.use(express.json({limit: "500kb"}));
+app.use(express.urlencoded({limit: "500kb", extended: true}));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
