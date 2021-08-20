@@ -1,5 +1,11 @@
 const {User, ServiceRequester, ServiceProvider} = require("../models/User");
 const parseQuery = (query) => query.toLowerCase().replace("+", " ");
+const cloudinary = require("cloudinary");
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_KEY,
+    api_secret: process.env.CLOUDINARY_SECRET,
+});
 module.exports = {
     async getUsers(req, res) {
         let user = await User.findById(req.user.id);
